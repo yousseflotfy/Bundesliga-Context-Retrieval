@@ -46,14 +46,17 @@ def bundesliga_clubs_retreival():
     results = return_sparql_query_results(sparql_query)["results"]["bindings"]
     cities_clubs_dict = {}
     for res in results:
-        cities_clubs_dict[res["cityLabel"]["value"]] = res["clubLabel"]["value"]
+        match = re.search(r'entity/(.*)', res["club"]["value"])
+        if not match:
+            raise Exception("club not found")
+        cities_clubs_dict[res["cityLabel"]["value"]] = match.group(1)
     return cities_clubs_dict
 
-def question_city_extraction(question,cities_list):
-    for city in cities_list:
+def question_city_extraction(question:str,cities_clubs_dict:dict):
+    for city in cities_clubs_dict.keys():
         pattern = r'\b' + re.escape(city) + r'\b'
         if re.search(pattern,question,flags=re.IGNORECASE):
-            return city
+            return city, cities_clubs_dict.get(city)
 
 def club_coach_retreival(club:str):
     sparql_query = """
@@ -61,7 +64,7 @@ def club_coach_retreival(club:str):
     WHERE
     {{
 
-    {club} wdt:P286 ?coach.
+    wd:{club} wdt:P286 ?coach.
 
     SERVICE wikibase:label {{ bd:serviceParam wikibase:language "[AUTO_LANGUAGE],mul,en". }}
     
@@ -76,6 +79,14 @@ def coach_info_retreival(coach:str):
     if not page_py.exists():
         raise Exception("Wikipedia Page Not Found")
     print(page_py.summary)
+
+def wrapper(question:str):
+    city_club_dict = bundesliga_clubs_retreival()
+    city,club = question_city_extraction(question,city_club_dict)
+    coach = club_coach_retreival(club)
+    print(coach_info_retreival(coach))
+
+wrapper("who is hamburg coach?")
 
 # print(club_coach_retreival("wd:Q15789"))
 # print(question_city_extraction("Who is coaching Munich?",bundesliga_clubs_retreival().keys()))
