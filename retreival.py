@@ -1,6 +1,5 @@
-from qwikidata.sparql import return_sparql_query_results
-import spacy
 import re
+from qwikidata.sparql import return_sparql_query_results
 import wikipediaapi
 
 class InvalidInputError(Exception):
