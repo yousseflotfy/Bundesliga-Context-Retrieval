@@ -3,29 +3,6 @@ import spacy
 import re
 import wikipediaapi
 
-
-# def question_city_extraction(question:str):
-#     nlp = spacy.load("en_core_web_sm")
-#     doc = nlp(question)
-#     # print(doc.ents)
-#     for entity in doc.ents:
-#         if entity.label_ in ["GPE","LOC"]:
-#             return entity.text
-
-# def question_city_extraction(question:str,cities_clubs_dict:dict):
-#     """
-#     Function that extracts city from the user questuon
-#     args: question (str)
-#           cities_clubs_dict (dict)
-#     returns: tupe(str,str)
-#     """
-#     words_list = question.split()
-#     for word in words_list:
-#         if cities_clubs_dict.get(word):
-#             return cities_clubs_dict.get(word)
-
-
-
 def bundesliga_clubs_retreival():
     """
     Function to query wikidata and construct a dict of cities 
@@ -78,15 +55,29 @@ def coach_info_retreival(coach:str):
     page_py = wiki_wiki.page(coach)
     if not page_py.exists():
         raise Exception("Wikipedia Page Not Found")
-    print(page_py.summary)
+    # print(page_py.summary)
+    return page_py.summary
 
-def wrapper(question:str):
-    city_club_dict = bundesliga_clubs_retreival()
+def wrapper(question:str,city_club_dict):
     city,club = question_city_extraction(question,city_club_dict)
     coach = club_coach_retreival(club)
-    print(coach_info_retreival(coach))
+    return coach_info_retreival(coach)
 
-wrapper("who is hamburg coach?")
+
+if __name__ == "__main__":
+    city_club_dict = bundesliga_clubs_retreival()
+    print("Chatbot: Hi! Type 'exit' to quit.")
+    
+    while True:
+        user_input = input("You: ")
+        
+        if user_input.lower() == "exit":
+            print("Chatbot: Goodbye!")
+            break
+        
+        # simple response logic
+        response = wrapper(user_input,city_club_dict)
+        print(f"Chatbot: {response}")
 
 # print(club_coach_retreival("wd:Q15789"))
 # print(question_city_extraction("Who is coaching Munich?",bundesliga_clubs_retreival().keys()))
