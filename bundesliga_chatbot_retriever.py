@@ -151,7 +151,6 @@ if __name__ == "__main__":
             print("Chatbot: Goodbye!")
             break
         
-        # simple response logic
         try:
             club_name,club_id,city_name = question_city_extraction(user_input,city_club_dict)
             coach_name = get_coach_name(club_id)
@@ -160,10 +159,3 @@ if __name__ == "__main__":
 
         except InvalidInputError as e:
             print(f"Chatbot: {e}")
-
-
-
-
-
-# print(club_coach_retreival("wd:Q15789"))
-# print(question_city_extraction("Who is coaching Munich?",bundesliga_clubs_retreival().keys()))

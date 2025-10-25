@@ -68,3 +68,45 @@ The system will:
 4. Fetch the coach’s Wikipedia introduction.
 5. Format and deliver a structured prompt to the LLM for generating the response.
 
+---
+
+## Installation and Execution
+
+1. **Clone the repository**
+
+2. **Create and activate a virtual environment**
+
+3. **Install dependencies**
+
+   ```
+   pip install -r requirements.txt
+   ```
+
+4. **Run the script**
+
+   ```bash
+   python bundesliga_chatbot_retriever.py
+   ```
+
+---
+
+## Extra Information
+
+**1. Advantages and disadvantages of using additional information**
+Using additional information ensures the chatbot gives accurate, up-to-date, and context-aware answers instead of relying on the LLM’s general knowledge. It builds trust and relevance for domain-specific questions. However, it adds complexity — requiring retrieval pipelines, external queries, and handling possible data inconsistencies.
+
+
+**2. Advantages and disadvantages of querying on every user question**
+Querying every time guarantees the chatbot always uses the latest data, which is important in dynamic domains like football. But it also increases latency and dependency on external APIs, making the system slower and more prone to network errors.
+
+
+**3. If coach information were only available via PDF**
+The system would need a preprocessing step to extract and structure text from the PDFs, for example using OCR or NLP-based parsing. Instead of live queries, the chatbot would rely on this local, preprocessed dataset. This adds one-time setup effort but improves speed and control over data consistency.
+
+
+**4. Potential for agents in this process**
+Yes, agents could be very useful here. For example, one agent could handle data retrieval from Wikidata, another could summarize Wikipedia content, and a third could format the final prompt. This modular setup improves scalability, maintainability, and error isolation.
+
+
+**5. Benefit of having a domain-specific data model**
+A structured data model helps represent the relationships between cities, clubs, and coaches clearly. It allows the system to reason over this knowledge rather than just retrieve text. That leads to cleaner queries, easier updates, and more reliable answers from the chatbot.
