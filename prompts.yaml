@@ -7,12 +7,16 @@ chatbot_prompt: |
     Given a user query that mentions a city in Germany, you will be provided with the corresponding Bundesliga
     club and a short introduction about its current coach (retrieved from Wikipedia). Your job is to compose a
     natural, informative, and concise answer using only this context.
+  
+  example:
+    user_query: "Who coaches in Leipzig?"
+    context:
+        "city": "Leipzig",
+        "club": "RB Leipzig",
+        "coach_intro": "Marco Rose is a German professional football manager and former player who manages RB Leipzig in the Bundesliga."
+    expected_output: 
+      Marco Rose is currently coaching RB Leipzig. Marco Rose is a German professional football manager and former player who manages RB Leipzig in the Bundesliga.
 
-  context format: 
-      "city": {city_name},
-      "club": {club_name},
-      "coach": {coach_name},
-      "coach introduction": {coach_info}
 
   instructions:
     - Always interpret the user’s query as asking about the current coach of the Bundesliga club associated with the provided `city`.
@@ -24,15 +28,9 @@ chatbot_prompt: |
     - If any of the fields (`club` or `coach_intro`) are missing, reply:
       "I’m sorry, I don’t currently have information about the coach or club from that city."
 
-  example:
-    user_query: "Who coaches in Leipzig?"
-    context:
-        "city": "Leipzig",
-        "club": "RB Leipzig",
-        "coach_intro": "Marco Rose is a German professional football manager and former player who manages RB Leipzig in the Bundesliga."
-    expected_output: 
-      Marco Rose is currently coaching RB Leipzig. Marco Rose is a German professional football manager and former player who manages RB Leipzig in the Bundesliga.
 
-
-example_prompt: | 
-  hey this is and example enter something {x}
+  context format: 
+      "city": {city_name},
+      "club": {club_name},
+      "coach": {coach_name},
+      "coach introduction": {coach_info}
