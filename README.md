@@ -97,8 +97,7 @@ Using additional information ensures the chatbot gives accurate, up-to-date, and
 
 
 **2. Advantages and disadvantages of querying on every user question**
-Querying every time guarantees the chatbot always uses the latest data, which is important in dynamic domains like football. But it also increases latency and dependency on external APIs, making the system slower and more prone to network errors.
-
+Querying every time guarantees the chatbot always uses the latest data, which is important in dynamic domains like football. But it also increases latency and dependency on external APIs, making the system slower and more prone to network errors. In this example to reduce latency the city/club qeuery runs once at the beginning.
 
 **3. If coach information were only available via PDF**
 The system would need a preprocessing step to extract and structure text from the PDFs, for example using OCR or NLP-based parsing. Instead of live queries, the chatbot would rely on this local, preprocessed dataset. This adds one-time setup effort but improves speed and control over data consistency.
