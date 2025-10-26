@@ -93,7 +93,7 @@ The system will:
 ## Extra Information
 
 **1. Advantages and disadvantages of using additional information**
-Using additional information ensures the chatbot gives accurate, up-to-date, and context-aware answers instead of relying on the LLM’s general knowledge. It builds trust and relevance for domain-specific questions. However, it adds complexity — requiring retrieval pipelines, external queries, and handling possible data inconsistencies.
+Using additional information ensures the chatbot gives accurate, up-to-date, and context-aware answers instead of relying on the LLM’s general knowledge. It builds trust and relevance for domain-specific questions. However, it adds complexity, requiring retrieval pipelines, external queries, and handling possible data inconsistencies.
 
 
 **2. Advantages and disadvantages of querying on every user question**
