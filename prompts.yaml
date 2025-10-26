@@ -30,6 +30,7 @@ chatbot_prompt: |
 
 
   context format: 
+      "question": {user_query}
       "city": {city_name},
       "club": {club_name},
       "coach": {coach_name},

@@ -69,11 +69,20 @@ def question_city_extraction(question:str,cities_clubs_dict:dict):
     Raises:
         InvalidInputError: If no valid Bundesliga city is found in the question.
     """
+    detected_cities = []
     for city in cities_clubs_dict.keys():
         pattern = r'\b' + re.escape(city) + r'\b'
         if  re.search(pattern,question,flags=re.IGNORECASE):
-            return cities_clubs_dict.get(city)["club_name"],cities_clubs_dict.get(city)["club_id"] ,city
-    raise InvalidInputError("Please Enter a valid city with a team playing in Bundesligue 1.")
+            detected_cities.append(city)
+    
+    if len(detected_cities) > 1:
+        raise InvalidInputError("Please Enter one city per question!")
+    if len(detected_cities) == 0:
+        raise InvalidInputError("Please Enter a valid city with a team playing in Bundesligue 1.")
+    
+    city = detected_cities[0]
+    return cities_clubs_dict.get(city)["club_name"],cities_clubs_dict.get(city)["club_id"] ,city
+    
 
 def get_coach_name(club:str):
     """
@@ -116,7 +125,7 @@ def get_coach_info(coach:str):
         raise WikiAPIError("Wikipedia Page Not Found. Please try again!")
     return page_py.summary
 
-def prompt_formating(city_name:str,club_name:str,coach_name:str,coach_info:str):
+def prompt_formating(city_name:str,club_name:str,coach_name:str,coach_info:str,user_query:str):
     """
     Format the system prompt for the chatbot using data about the city, club, and coach.
 
@@ -125,6 +134,7 @@ def prompt_formating(city_name:str,club_name:str,coach_name:str,coach_info:str):
         club_name (str): Name of the football club.
         coach_name (str): Name of the club’s coach.
         coach_info (str): Short Wikipedia introduction about the coach.
+        user_query (str): question asked by the user.
 
     Returns:
         str: Formatted system prompt ready for the LLM.
@@ -136,7 +146,8 @@ def prompt_formating(city_name:str,club_name:str,coach_name:str,coach_info:str):
         city_name=city_name,
         club_name=club_name,
         coach_name=coach_name,
-        coach_info=coach_info
+        coach_info=coach_info,
+        user_query= user_query
     )
     return system_prompt[0].content
 
@@ -155,7 +166,8 @@ if __name__ == "__main__":
             club_name,club_id,city_name = question_city_extraction(user_input,city_club_dict)
             coach_name = get_coach_name(club_id)
             coach_info = get_coach_info(coach_name)
-            print(prompt_formating(city_name,club_name,coach_name,coach_info))
+            prompt = prompt_formating(city_name,club_name,coach_name,coach_info,user_input)
+            print("Chatbot: ",prompt)
 
         except InvalidInputError as e:
             print(f"Chatbot: {e}")
